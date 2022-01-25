@@ -55,10 +55,9 @@ export default function PaginaInicial() {
         <GlobalStyle />
         <Box
           styleSheet={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            backgroundColor: appConfig.theme.colors.primary[500],
-            backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
-            backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
+            display: 'flex', alignItems: 'center', justifyContent: 'left',
+            backgroundImage: 'url(https://kauelima.com/img/stones.jpg)',
+            backgroundRepeat: 'no-repeat', backgroundSize: 'cover',
           }}
         >
           <Box
@@ -70,8 +69,14 @@ export default function PaginaInicial() {
                 xs: 'column',
                 sm: 'row',
               },
-              width: '100%', maxWidth: '700px',
-              borderRadius: '5px', padding: '32px', margin: '16px',
+              width: '100%', 
+              maxWidth: {
+                xs: '100%', 
+                md: '70%', 
+                lg: '60%', 
+              },
+              height: "100%",
+              padding: '32px', margin: 0,
               boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
               backgroundColor: appConfig.theme.colors.neutrals[700],
             }}
