@@ -1,5 +1,6 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
 
 function GlobalStyle() {
     return (
@@ -48,8 +49,7 @@ function Title(props){
 }
 
 export default function PaginaInicial() {
-    const username = 'kauelima';
-  
+    const [username, setUsername] = React.useState('kauelima');
     return (
       <>
         <GlobalStyle />
@@ -64,7 +64,7 @@ export default function PaginaInicial() {
             styleSheet={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               flexDirection: {
                 xs: 'column',
                 sm: 'row',
@@ -90,21 +90,33 @@ export default function PaginaInicial() {
               }}
             >
               <Title tag="h2">Boas vindas de volta!</Title>
-              <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+              <Text variant="body3" styleSheet={{color: appConfig.theme.colors.neutrals[300] }}>
                 {appConfig.name}
               </Text>
-  
-              <TextField
-                fullWidth
-                textFieldColors={{
-                  neutral: {
-                    textColor: appConfig.theme.colors.neutrals[200],
-                    mainColor: appConfig.theme.colors.neutrals[900],
-                    mainColorHighlight: appConfig.theme.colors.primary[500],
-                    backgroundColor: appConfig.theme.colors.neutrals[800],
-                  },
+                <Image
+                styleSheet={{
+                  borderRadius: '50%',
+                  height: '100px',
+                  margin: '20px 0',
                 }}
+                src={`https://github.com/${username}.png`}
               />
+              <TextField 
+                  value={username}
+                  onChange={function (event){
+                    const valor = event.target.value
+                    setUsername(valor)
+                  }} 
+                  fullWidth
+                  textFieldColors={{
+                    neutral: {
+                      textColor: appConfig.theme.colors.neutrals[200],
+                      mainColor: appConfig.theme.colors.neutrals[900],
+                      mainColorHighlight: appConfig.theme.colors.primary[500],
+                      backgroundColor: appConfig.theme.colors.neutrals[800],
+                    },
+                  }}
+                />
               <Button
                 type='submit'
                 label='Entrar'
@@ -118,44 +130,6 @@ export default function PaginaInicial() {
               />
             </Box>
             {/* Formulário */}
-  
-  
-            {/* Photo Area */}
-            <Box
-              styleSheet={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                maxWidth: '200px',
-                padding: '16px',
-                backgroundColor: appConfig.theme.colors.neutrals[800],
-                border: '1px solid',
-                borderColor: appConfig.theme.colors.neutrals[999],
-                borderRadius: '10px',
-                flex: 1,
-                minHeight: '240px',
-              }}
-            >
-              <Image
-                styleSheet={{
-                  borderRadius: '50%',
-                  marginBottom: '16px',
-                }}
-                src={`https://github.com/${username}.png`}
-              />
-              <Text
-                variant="body4"
-                styleSheet={{
-                  color: appConfig.theme.colors.neutrals[200],
-                  backgroundColor: appConfig.theme.colors.neutrals[900],
-                  padding: '3px 10px',
-                  borderRadius: '1000px'
-                }}
-              >
-                {username}
-              </Text>
-            </Box>
-            {/* Photo Area */}
           </Box>
         </Box>
       </>
