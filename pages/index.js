@@ -11,7 +11,7 @@ function Title(props){
 
             <style jsx>{`
             ${Tag} {
-                color: ${appConfig.theme.colors.neutrals['200']};
+                color: ${appConfig.theme.colors.light['cinza1']};
                 font-size:24px;
                 font-weight:600;
             }
@@ -21,7 +21,7 @@ function Title(props){
 }
 
 export default function PaginaInicial() {
-    const [username, setUsername] = React.useState('kauelima');
+    const [username, setUsername] = React.useState('');
     const roteamento = useRouter();
 
     return (
@@ -51,7 +51,7 @@ export default function PaginaInicial() {
               height: "100%",
               padding: '32px', margin: 0,
               boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-              backgroundColor: appConfig.theme.colors.neutrals[700],
+              backgroundColor: appConfig.theme.colors.light['almostWhite'],
             }}
           >
             {/* Formulário */}
@@ -67,7 +67,7 @@ export default function PaginaInicial() {
               }}
             >
               <Title tag="h2">Boas vindas de volta!</Title>
-              <Text variant="body3" styleSheet={{color: appConfig.theme.colors.neutrals[300] }}>
+              <Text variant="body3" styleSheet={{color: appConfig.theme.colors.light['cinza1'] }}>
                 {appConfig.name}
               </Text>
                 <Image
@@ -77,33 +77,45 @@ export default function PaginaInicial() {
                   margin: '20px 0',
                 }}
                 src={`https://github.com/${username}.png`}
+                onError = {function(event) {
+                  event.target.src = `https://dummyimage.com/640/E7E7E7/222222.png&text=??`
+                  
+              }}
               />
-              <TextField 
-                  value={username}
-                  onChange={function (event){
-                    const valor = event.target.value
-                    setUsername(valor)
-                  }} 
-                  fullWidth
-                  textFieldColors={{
-                    neutral: {
-                      textColor: appConfig.theme.colors.neutrals[200],
-                      mainColor: appConfig.theme.colors.neutrals[900],
-                      mainColorHighlight: appConfig.theme.colors.primary[500],
-                      backgroundColor: appConfig.theme.colors.neutrals[800],
-                    },
-                  }}
-                />
+              <TextField
+                value={username}
+                placeholder="Digite seu usuário do Github"
+                onChange={function (event){
+                  const valor = event.target.value
+                  setUsername(valor)
+                }} 
+
+                fullWidth
+                hasLabel={false}
+                rounded="full"
+                size="sm"
+                variant="basicBordered"
+                textFieldColors={{
+                  neutral: {
+                    textColor: appConfig.theme.colors.light['gray1'],
+                    mainColor: appConfig.theme.colors.light['gray2'],
+                    mainColorHighlight: appConfig.theme.colors.light['primary'],
+                    backgroundColor: appConfig.theme.colors.light['almostWhite'],
+                  },
+                }}
+              />
               <Button
                 type='submit'
                 label='Entrar'
                 fullWidth
                 buttonColors={{
-                  contrastColor: appConfig.theme.colors.neutrals["000"],
-                  mainColor: appConfig.theme.colors.primary[500],
-                  mainColorLight: appConfig.theme.colors.primary[400],
-                  mainColorStrong: appConfig.theme.colors.primary[600],
+                  contrastColor: appConfig.theme.colors.light['primaryOverlay'],
+                  mainColor: appConfig.theme.colors.light['primary'],
+                  mainColorLight: appConfig.theme.colors.light['secondary'],
+                  mainColorStrong: appConfig.theme.colors.light['primary'],
                 }}
+                rounded="full"
+                size="xl"
               />
             </Box>
             {/* Formulário */}
