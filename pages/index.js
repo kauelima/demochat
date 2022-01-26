@@ -11,7 +11,7 @@ function Title(props){
 
             <style jsx>{`
             ${Tag} {
-                color: ${appConfig.theme.colors.light['cinza1']};
+                color: ${appConfig.theme.colors.light['gray1']};
                 font-size:24px;
                 font-weight:600;
             }
@@ -23,6 +23,7 @@ function Title(props){
 export default function PaginaInicial() {
     const [username, setUsername] = React.useState('');
     const roteamento = useRouter();
+    const [profilePicture, setProfilePicture] = React.useState('https://dummyimage.com/640/E7E7E7/222222.png&text=??');
 
     return (
       <>
@@ -63,11 +64,11 @@ export default function PaginaInicial() {
               }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
+                width: { xs: '100%', sm: '80%' }, textAlign: 'center', marginBottom: '32px',
               }}
             >
               <Title tag="h2">Boas vindas de volta!</Title>
-              <Text variant="body3" styleSheet={{color: appConfig.theme.colors.light['cinza1'] }}>
+              <Text variant="body3" styleSheet={{color: appConfig.theme.colors.light['gray1'] }}>
                 {appConfig.name}
               </Text>
                 <Image
@@ -75,11 +76,14 @@ export default function PaginaInicial() {
                   borderRadius: '50%',
                   height: '100px',
                   margin: '20px 0',
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: appConfig.theme.colors.light['gray3'],
+                  backgroundColor: appConfig.theme.colors.light['gray3'],
                 }}
-                src={`https://github.com/${username}.png`}
+                src={profilePicture}
                 onError = {function(event) {
-                  event.target.src = `https://dummyimage.com/640/E7E7E7/222222.png&text=??`
-                  
+                  setProfilePicture(`https://dummyimage.com/640/E7E7E7/222222.png&text=??`)
               }}
               />
               <TextField
@@ -87,6 +91,7 @@ export default function PaginaInicial() {
                 placeholder="Digite seu usuário do Github"
                 onChange={function (event){
                   const valor = event.target.value
+                  setProfilePicture(`https://github.com/${valor}.png`)
                   setUsername(valor)
                 }} 
 
