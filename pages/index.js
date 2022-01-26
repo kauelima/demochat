@@ -52,7 +52,7 @@ export default function PaginaInicial() {
               height: "100%",
               padding: '32px', margin: 0,
               boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-              backgroundColor: appConfig.theme.colors.light['almostWhite'],
+              backgroundColor: appConfig.theme.colors.light['gray4'],
             }}
           >
             {/* Formulário */}
@@ -105,7 +105,7 @@ export default function PaginaInicial() {
                     textColor: appConfig.theme.colors.light['gray1'],
                     mainColor: appConfig.theme.colors.light['gray2'],
                     mainColorHighlight: appConfig.theme.colors.light['primary'],
-                    backgroundColor: appConfig.theme.colors.light['almostWhite'],
+                    backgroundColor: appConfig.theme.colors.light['gray4'],
                   },
                 }}
               />
