@@ -35,8 +35,6 @@ export default function ChatPage() {
         <Box
             styleSheet={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundImage: `url(https://kauelima.com/img/stones.jpg)`,
-                backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
                 color: appConfig.theme.colors.light['primaryOverlay']
             }}
         >
@@ -46,11 +44,10 @@ export default function ChatPage() {
                     flexDirection: 'column',
                     flex: 1,
                     boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-                    borderRadius: '5px',
-                    backgroundColor: appConfig.theme.colors.light['primary'],
+                    backgroundImage: `url(https://kauelima.com/img/stones.jpg)`,
                     height: '100%',
-                    maxWidth: '95%',
-                    maxHeight: '95vh',
+                    maxWidth: '100%',
+                    maxHeight: '100vh',
                     padding: '32px',
                 }}
             >
@@ -89,7 +86,7 @@ export default function ChatPage() {
                                 setMensagem(valor);
                             }}
                             onKeyPress={(event) => {
-                                if (event.key === 'Enter') {
+                                if (event.key === 'Enter' && mensagem.trim().length > 0 && event.shiftKey == false){
                                     event.preventDefault();
                                     handleNovaMensagem(mensagem);
                                 }
