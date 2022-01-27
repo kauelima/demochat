@@ -16,9 +16,6 @@ export default function ChatPage() {
     const [chatmsg, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
-    console.log( 'Anon Key: ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY );
-    console.log( 'URL: ' + process.env.NEXT_PUBLIC_SUPABASE_URL )
-
     const router = useRouter();
     const { username } = router.query;
 
@@ -70,7 +67,7 @@ export default function ChatPage() {
                     height: '100%',
                     maxWidth: '100%',
                     maxHeight: '100vh',
-                    padding: '32px',
+                    padding: '4px',
                 }}
             >
                 <Header />
