@@ -3,7 +3,7 @@ import React from 'react';
 import appConfig from '../config.json';
 
 export default function ChatPage() {
-    const [mensagem, setMensagem] = React.useState('');
+    const [chatmsg, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
     /*
@@ -18,14 +18,14 @@ export default function ChatPage() {
     - [X] Lista de mensagens 
     */
     function handleNovaMensagem(novaMensagem) {
-        const mensagem = {
+        const chatmsg = {
             id: listaDeMensagens.length + 1,
             de: 'kauelima',
             texto: novaMensagem,
         };
 
         setListaDeMensagens([
-            mensagem,
+            chatmsg,
             ...listaDeMensagens,
         ]);
         setMensagem('');
@@ -65,10 +65,10 @@ export default function ChatPage() {
                     }}
                 >
                     <MessageList mensagens={listaDeMensagens} />
-                    {/* {listaDeMensagens.map((mensagemAtual) => {
+                    {/* {listaDeMensagens.map((chatmsgAtual) => {
                         return (
-                            <li key={mensagemAtual.id}>
-                                {mensagemAtual.de}: {mensagemAtual.texto}
+                            <li key={chatmsAtual.id}>
+                                {chatmsgAtual.de}: {chatmsgAtual.texto}
                             </li>
                         )
                     })} */}
@@ -80,15 +80,15 @@ export default function ChatPage() {
                         }}
                     >
                         <TextField
-                            value={mensagem}
+                            value={chatmsg}
                             onChange={(event) => {
                                 const valor = event.target.value;
                                 setMensagem(valor);
                             }}
                             onKeyPress={(event) => {
-                                if (event.key === 'Enter' && mensagem.trim().length > 0 && event.shiftKey == false){
+                                if (event.key === 'Enter' && chatmsg.trim().length > 0 && event.shiftKey == false){
                                     event.preventDefault();
-                                    handleNovaMensagem(mensagem);
+                                    handleNovaMensagem(chatmsg);
                                 }
                             }}
                             placeholder="Digite sua mensagem aqui..."
@@ -103,6 +103,22 @@ export default function ChatPage() {
                                 marginRight: '12px',
                                 color: appConfig.theme.colors.light['black'],
                             }}
+                        />
+                        <Button
+                            buttonColors={{
+                                contrastColor: appConfig.theme.colors.light['primaryOverlay'],
+                                mainColor: appConfig.theme.colors.light['primary'],
+                                mainColorStrong: appConfig.theme.colors.light['primary']
+                            }}
+                            onClick={() => {
+                                if (chatmsg.trim().length > 0){
+                                    handleNovaMensagem(chatmsg);
+                                }
+                            }}
+                            size="xl"
+                            rounded="full"
+                            variant="secondary"
+                            iconName="FaPaperPlane"
                         />
                     </Box>
                 </Box>
@@ -146,10 +162,10 @@ function MessageList(props) {
                 marginBottom: '16px',
             }}
         >
-            {props.mensagens.map((mensagem) => {
+            {props.mensagens.map((chatmsg) => {
                 return (
                     <Text
-                        key={mensagem.id}
+                        key={chatmsg.id}
                         tag="li"
                         styleSheet={{
                             borderRadius: '5px',
@@ -164,36 +180,54 @@ function MessageList(props) {
                         <Box
                             styleSheet={{
                                 marginBottom: '8px',
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexWrap: 'nowrap',
+                                justifyContent: 'space-between',
                             }}
                         >
-                            {/* Profile picture */}
-                            <Image
-                                styleSheet={{
-                                    width: '20px',
-                                    height: '20px',
-                                    borderRadius: '50%',
-                                    display: 'inline-block',
-                                    marginRight: '8px',
-                                }}
-                                src={`https://github.com/kauelima.png`}
-                            />
-                            {/* User */}
-                            <Text tag="strong">
-                                {mensagem.de}
-                            </Text>
-                            {/* Datetime */}
-                            <Text
-                                styleSheet={{
-                                    fontSize: '10px',
-                                    marginLeft: '8px',
-                                    color: appConfig.theme.colors.light['gray2'],
-                                }}
-                                tag="span"
-                            >
-                                {(new Date().toLocaleDateString())}
-                            </Text>
+                            <Box>
+                                {/* Profile picture */}
+                                <Image
+                                    styleSheet={{
+                                        width: '30px',
+                                        height: '30px',
+                                        borderRadius: '50%',
+                                        display: 'inline-block',
+                                        marginRight: '8px',
+                                    }}
+                                    src={`https://github.com/kauelima.png`}
+                                />
+                                {/* User */}
+                                <Text tag="strong">
+                                    {chatmsg.de}
+                                </Text>
+                                {/* Datetime */}
+                                <Text
+                                    styleSheet={{
+                                        fontSize: '10px',
+                                        marginLeft: '8px',
+                                        color: appConfig.theme.colors.light['gray2'],
+                                    }}
+                                    tag="span"
+                                >
+                                    {(new Date().toLocaleDateString())}
+                                </Text>
+                            </Box>
+                            {/* Delete Message Button */}
+                            {/* <Box>
+                                <Button
+                                    iconName="FaTimes"
+                                    variant="tertiary"
+                                    colorVariant='neutral'
+                                
+                                    onClick={(event) => {
+                                        console.log(event);
+                                    }}
+                                />
+                            </Box> */}
                         </Box>
-                        {mensagem.texto}
+                        {chatmsg.texto}
                     </Text>
                 );
             })}
