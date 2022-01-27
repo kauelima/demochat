@@ -181,7 +181,10 @@ function MessageList(props) {
     const router = useRouter();
     const { username } = router.query;
 
-    async function handleDeleteMessage(msgId){
+    async function handleDeleteMessage(msgId,msgUsr){
+        if(username == msgUsr){
+            console.log('Username url: ' + username)
+            console.log('User msg: ' + msgUsr)
         await supabaseClient
             .from('chatMessages')
             .delete()
@@ -196,7 +199,7 @@ function MessageList(props) {
         props.setListaDeMensagens([
             ...novaLista
         ])
-    }
+    }}
 
     return (
         <Box
@@ -272,7 +275,7 @@ function MessageList(props) {
                                     variant="tertiary"
                                     colorVariant='neutral'
                                 
-                                    onClick={() => handleDeleteMessage(chatmsg.id)}
+                                    onClick={() => handleDeleteMessage(chatmsg.id,chatmsg.usr)}
                                 />
                             </Box>
                         </Box>
