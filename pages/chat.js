@@ -1,33 +1,55 @@
+
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
+import { useRouter } from 'next/router';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js'
+
+
+
+const supabase_anon_key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabase_url = process.env.NEXT_PUBLIC_SUPABASE_URL 
+const supabaseClient = createClient(supabase_url, supabase_anon_key)
+
 
 export default function ChatPage() {
     const [chatmsg, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
-    /*
-    // Usuário
-    - Usuário digita no campo textarea
-    - Aperta enter para enviar
-    - Tem que adicionar o texto na listagem
-    
-    // Dev
-    - [X] Campo criado
-    - [X] Vamos usar o onChange usa o useState (ter if pra caso seja enter pra limpar a variavel)
-    - [X] Lista de mensagens 
-    */
+    console.log( 'Anon Key: ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY );
+    console.log( 'URL: ' + process.env.NEXT_PUBLIC_SUPABASE_URL )
+
+    const router = useRouter();
+    const { username } = router.query;
+
+    React.useEffect(() => {
+        supabaseClient
+            .from('chatMessages')
+            .select('*')
+            .order('created_at', {ascending: false})
+            .then(({data}) => {
+                setListaDeMensagens(data)
+            });
+    }, []);
+
+  
+
     function handleNovaMensagem(novaMensagem) {
         const chatmsg = {
-            id: listaDeMensagens.length + 1,
-            de: 'kauelima',
-            texto: novaMensagem,
+            usr: username,
+            text: novaMensagem,
         };
+        supabaseClient
+            .from('chatMessages')
+            .insert([chatmsg])
+            .then((res) => {
+                setListaDeMensagens([
+                res.data[0],
+                ...listaDeMensagens,
+                ]);
+            });
 
-        setListaDeMensagens([
-            chatmsg,
-            ...listaDeMensagens,
-        ]);
+        
         setMensagem('');
     }
 
@@ -64,29 +86,23 @@ export default function ChatPage() {
                         padding: '16px',
                     }}
                 >
-                    <MessageList mensagens={listaDeMensagens} />
-                    {/* {listaDeMensagens.map((chatmsgAtual) => {
-                        return (
-                            <li key={chatmsAtual.id}>
-                                {chatmsgAtual.de}: {chatmsgAtual.texto}
-                            </li>
-                        )
-                    })} */}
+                    <MessageList mensagens={listaDeMensagens} setListaDeMensagens={setListaDeMensagens} />
+
                     <Box
                         as="form"
                         styleSheet={{
                             display: 'flex',
-                            alignItems: 'center',
+                            alignItems: 'flex-start',
                         }}
                     >
                         <Image
                                     styleSheet={{
-                                        width: '40px',
-                                        height: '40px',
+                                        width: '50px',
+                                        height: '50px',
                                         borderRadius: '50%',
                                         marginRight: '8px',
                                     }}
-                                    src={`https://github.com/kauelima.png`}
+                                    src={`https://github.com/${username}.png`}
                         />
                         <TextField
                             value={chatmsg}
@@ -101,12 +117,14 @@ export default function ChatPage() {
                                 }
                             }}
                             placeholder="Digite sua mensagem aqui..."
-                            type="textarea"
+                            type="text"
                             styleSheet={{
                                 width: '100%',
+
+                                height: '50px',
                                 border: '0',
                                 resize: 'none',
-                                borderRadius: '10px',
+                                borderRadius: '50px',
                                 padding: '6px 8px',
                                 backgroundColor: appConfig.theme.colors.light['gray4'],
                                 marginRight: '12px',
@@ -125,11 +143,12 @@ export default function ChatPage() {
                                 }
                             }}
                             rounded="full"
-                            variant="secondary"
-                            label="Enviar mensagem"
+                            variant="primary"
+                            label="Enviar"
                             styleSheet={{
                                 height: '50px',
-                                margin: '0'
+                                margin: '0',
+                                paddingHorizontal: '30px'
                             }}
                         />
                     </Box>
@@ -162,6 +181,26 @@ function Header() {
 }
 
 function MessageList(props) {
+    const router = useRouter();
+    const { username } = router.query;
+
+    async function handleDeleteMessage(msgId){
+        await supabaseClient
+            .from('chatMessages')
+            .delete()
+            .match({ id: msgId })
+
+        let novaLista = props.mensagens.filter((message)=>{
+            if(message.id != msgId){
+                return message
+            }
+        })
+
+        props.setListaDeMensagens([
+            ...novaLista
+        ])
+    }
+
     return (
         <Box
             tag="ul"
@@ -175,7 +214,9 @@ function MessageList(props) {
             }}
         >
             {props.mensagens.map((chatmsg) => {
+                
                 return (
+                    
                     <Text
                         key={chatmsg.id}
                         tag="li"
@@ -208,14 +249,14 @@ function MessageList(props) {
                                         display: 'inline-block',
                                         marginRight: '8px',
                                     }}
-                                    src={`https://github.com/kauelima.png`}
+                                    src={`https://github.com/${chatmsg.usr}.png`}
                                 />
                                 {/* User */}
                                 <Text tag="strong">
-                                    {chatmsg.de}
+                                    {chatmsg.usr}
                                 </Text>
                                 {/* Datetime */}
-                                <Text
+                                <Text                            
                                     styleSheet={{
                                         fontSize: '10px',
                                         marginLeft: '8px',
@@ -223,23 +264,22 @@ function MessageList(props) {
                                     }}
                                     tag="span"
                                 >
-                                    {(new Date().toLocaleDateString())}
+                                   
+                                   {chatmsg.created_at}                            
                                 </Text>
                             </Box>
                             {/* Delete Message Button */}
-                            {/* <Box>
+                            <Box>
                                 <Button
                                     iconName="FaTimes"
                                     variant="tertiary"
                                     colorVariant='neutral'
                                 
-                                    onClick={(event) => {
-                                        console.log(event);
-                                    }}
+                                    onClick={() => handleDeleteMessage(chatmsg.id)}
                                 />
-                            </Box> */}
+                            </Box>
                         </Box>
-                        {chatmsg.texto}
+                        {chatmsg.text}
                     </Text>
                 );
             })}
