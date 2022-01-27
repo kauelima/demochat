@@ -79,6 +79,15 @@ export default function ChatPage() {
                             alignItems: 'center',
                         }}
                     >
+                        <Image
+                                    styleSheet={{
+                                        width: '40px',
+                                        height: '40px',
+                                        borderRadius: '50%',
+                                        marginRight: '8px',
+                                    }}
+                                    src={`https://github.com/kauelima.png`}
+                        />
                         <TextField
                             value={chatmsg}
                             onChange={(event) => {
@@ -115,10 +124,13 @@ export default function ChatPage() {
                                     handleNovaMensagem(chatmsg);
                                 }
                             }}
-                            size="xl"
                             rounded="full"
                             variant="secondary"
-                            iconName="FaPaperPlane"
+                            label="Enviar mensagem"
+                            styleSheet={{
+                                height: '50px',
+                                margin: '0'
+                            }}
                         />
                     </Box>
                 </Box>
