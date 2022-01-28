@@ -94,7 +94,7 @@ export default function PaginaInicial() {
                 onChange={function (event){
                   const valor = event.target.value
                   setProfilePicture(`https://github.com/${valor}.png`)
-                  setUsername(valor)
+                  setUsername(valor.toLowerCase())
                 }} 
 
                 fullWidth

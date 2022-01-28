@@ -4,6 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js'
+import { ButtonSendSticker } from '../src/components/buttonSendSticker'
 
 
 
@@ -17,7 +18,7 @@ export default function ChatPage() {
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
     const router = useRouter();
-    const { username } = router.query;
+    const loggedUsername = router.query.username;
 
     React.useEffect(() => {
         supabaseClient
@@ -33,7 +34,7 @@ export default function ChatPage() {
 
     function handleNovaMensagem(novaMensagem) {
         const chatmsg = {
-            usr: username,
+            usr: loggedUsername,
             text: novaMensagem,
         };
         supabaseClient
@@ -99,7 +100,7 @@ export default function ChatPage() {
                                         borderRadius: '50%',
                                         marginRight: '8px',
                                     }}
-                                    src={`https://github.com/${username}.png`}
+                                    src={`https://github.com/${loggedUsername}.png`}
                         />
                         <TextField
                             value={chatmsg}
@@ -128,6 +129,7 @@ export default function ChatPage() {
                                 color: appConfig.theme.colors.light['black'],
                             }}
                         />
+                        {/* <ButtonSendSticker /> */}
                         <Button
                             buttonColors={{
                                 contrastColor: appConfig.theme.colors.light['primaryOverlay'],
@@ -183,8 +185,6 @@ function MessageList(props) {
 
     async function handleDeleteMessage(msgId,msgUsr){
         if(username == msgUsr){
-            console.log('Username url: ' + username)
-            console.log('User msg: ' + msgUsr)
         await supabaseClient
             .from('chatMessages')
             .delete()
@@ -213,8 +213,9 @@ function MessageList(props) {
                 marginBottom: '16px',
             }}
         >
-            {props.mensagens.map((chatmsg) => {
-                
+            {props.mensagens.map((chatmsg) => {  
+            const isSameUser = username === chatmsg.usr
+            
                 return (
                     
                     <Text
@@ -269,6 +270,7 @@ function MessageList(props) {
                                 </Text>
                             </Box>
                             {/* Delete Message Button */}
+                            { isSameUser &&
                             <Box>
                                 <Button
                                     iconName="FaTimes"
@@ -277,7 +279,7 @@ function MessageList(props) {
                                 
                                     onClick={() => handleDeleteMessage(chatmsg.id,chatmsg.usr)}
                                 />
-                            </Box>
+                            </Box>}
                         </Box>
                         {chatmsg.text}
                     </Text>
