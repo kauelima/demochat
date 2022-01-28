@@ -1,4 +1,3 @@
-
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -12,16 +11,23 @@ const supabase_anon_key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase_url = process.env.NEXT_PUBLIC_SUPABASE_URL 
 const supabaseClient = createClient(supabase_url, supabase_anon_key)
 
-function listenMessages(addRemoteMsg) {
+function remoteMessagesListener(remoteMsg) {
     return supabaseClient
         .from('chatMessages')
-        .on('INSERT', (remoteMsg) => {
-            console.log(remoteMsg);
-            addRemoteMsg(remoteMsg.new);
+        .on('*', (response) => {
+            if(response.eventType==='INSERT'){
+                remoteMsg('INSERT',response.new)
+            }
+            else if(response.eventType==='DELETE'){
+                remoteMsg('DELETE',response.old)
+            }
+            else if(response.eventType==='UPDATE'){
+                remoteMsg('UPDATE',response.new)
+            }
         })
-        .subscribe();
-    
+        .subscribe();  
 }
+
 
 export default function ChatPage() {
     const [chatmsg, setMensagem] = React.useState('');
@@ -39,13 +45,40 @@ export default function ChatPage() {
                 setListaDeMensagens(data)
             });
 
-            listenMessages((novaMensagem) => {
-                setListaDeMensagens((currentMsgList)=>{
-                    return[
-                        novaMensagem,
-                        ...currentMsgList,
-                        ]
-                });    
+            remoteMessagesListener((eventType, remoteMsg) => {
+                if(eventType==='INSERT'){
+                    setListaDeMensagens((currentMsgList)=>{
+                        return[remoteMsg,...currentMsgList];
+                    })
+                }
+                else if(eventType==='DELETE'){
+                    setListaDeMensagens((currentMsgList)=>{
+                        return (
+                            // console.log('Lista antes: ', currentMsgList),
+                            currentMsgList.filter((msgAtual)=>{
+                                return msgAtual.id !== remoteMsg.id
+                                // console.log('Atual: ', msgAtual.id),
+                                // console.log('Remote: ', remoteMsg.id),
+                                // console.log('Lista depois: ', currentMsgList)
+                            })
+                        )
+                    })
+                }
+                else if(eventType==='UPDATE'){
+                    setListaDeMensagens((currentMsgList)=>{
+                        return(
+                            currentMsgList.map((editMsg)=>{
+                                if(editMsg.id===remoteMsg.id){
+                                    editMsg.text = remoteMsg.text;
+                                    return editMsg;
+                                }
+                                else{
+                                    return editMsg;
+                                }
+                            })
+                        )
+                    })
+                }
             });
     }, []);
 
@@ -60,13 +93,7 @@ export default function ChatPage() {
             .from('chatMessages')
             .insert([chatmsg])
             .then((res) => {
-            //     setListaDeMensagens([
-            //     res.data[0],
-            //     ...listaDeMensagens,
-            //     ]);
             });
-
-        
         setMensagem('');
     }
 
