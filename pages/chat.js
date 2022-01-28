@@ -12,6 +12,16 @@ const supabase_anon_key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase_url = process.env.NEXT_PUBLIC_SUPABASE_URL 
 const supabaseClient = createClient(supabase_url, supabase_anon_key)
 
+function listenMessages(addRemoteMsg) {
+    return supabaseClient
+        .from('chatMessages')
+        .on('INSERT', (remoteMsg) => {
+            console.log(remoteMsg);
+            addRemoteMsg(remoteMsg.new);
+        })
+        .subscribe();
+    
+}
 
 export default function ChatPage() {
     const [chatmsg, setMensagem] = React.useState('');
@@ -28,6 +38,15 @@ export default function ChatPage() {
             .then(({data}) => {
                 setListaDeMensagens(data)
             });
+
+            listenMessages((novaMensagem) => {
+                setListaDeMensagens((currentMsgList)=>{
+                    return[
+                        novaMensagem,
+                        ...currentMsgList,
+                        ]
+                });    
+            });
     }, []);
 
   
@@ -41,10 +60,10 @@ export default function ChatPage() {
             .from('chatMessages')
             .insert([chatmsg])
             .then((res) => {
-                setListaDeMensagens([
-                res.data[0],
-                ...listaDeMensagens,
-                ]);
+            //     setListaDeMensagens([
+            //     res.data[0],
+            //     ...listaDeMensagens,
+            //     ]);
             });
 
         
@@ -131,7 +150,6 @@ export default function ChatPage() {
                         />
                         <ButtonSendSticker 
                             onStickerClick={(sticker) => {
-                                console.log(':sticker: ' + sticker);
                                 handleNovaMensagem(':sticker: ' + sticker );
 
                             }}
