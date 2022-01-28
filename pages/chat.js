@@ -129,7 +129,13 @@ export default function ChatPage() {
                                 color: appConfig.theme.colors.light['black'],
                             }}
                         />
-                        {/* <ButtonSendSticker /> */}
+                        <ButtonSendSticker 
+                            onStickerClick={(sticker) => {
+                                console.log(':sticker: ' + sticker);
+                                handleNovaMensagem(':sticker: ' + sticker );
+
+                            }}
+                        />
                         <Button
                             buttonColors={{
                                 contrastColor: appConfig.theme.colors.light['primaryOverlay'],
@@ -147,7 +153,7 @@ export default function ChatPage() {
                             styleSheet={{
                                 height: '50px',
                                 margin: '0',
-                                paddingHorizontal: '30px'
+                                paddingHorizontal: '25px'
                             }}
                         />
                     </Box>
@@ -205,7 +211,7 @@ function MessageList(props) {
         <Box
             tag="ul"
             styleSheet={{
-                overflow: 'scroll',
+                overflow: 'auto',
                 display: 'flex',
                 flexDirection: 'column-reverse',
                 flex: 1,
@@ -281,7 +287,17 @@ function MessageList(props) {
                                 />
                             </Box>}
                         </Box>
-                        {chatmsg.text}
+                        {chatmsg.text.startsWith(':sticker:')
+                            ? (
+                                <Image 
+                                    src={chatmsg.text.replace(':sticker:','')} 
+                                    width='35%'
+                                />
+                            )
+                            : ( 
+                                chatmsg.text
+                            )}
+                       
                     </Text>
                 );
             })}
