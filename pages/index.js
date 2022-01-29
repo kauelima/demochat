@@ -24,8 +24,22 @@ function Title(props){
 
 export default function PaginaInicial() {
     const [username, setUsername] = React.useState('');
-    const roteamento = useRouter();
+    const router = useRouter();
     const [profilePicture, setProfilePicture] = React.useState('https://dummyimage.com/640/E7E7E7/222222.png&text=??');
+    const [isUsernameValid, setIsUsernameValid] = React.useState(false);
+
+    function checkValidUsername() {
+        {username.length >= 1
+          ? (
+            setIsUsernameValid(true),
+            console.log('username valid: ', username)
+          )
+          : (
+            setIsUsernameValid(false),
+            console.log('username invalid: ', username)
+          )
+        }
+    }
 
     return (
       <>
@@ -62,7 +76,7 @@ export default function PaginaInicial() {
               as="form"
               onSubmit={function (eventInfo){
                 eventInfo.preventDefault();
-                roteamento.push(`/chat?username=${username}`);
+                router.push(`/chat?username=${username}`);
               }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -95,6 +109,7 @@ export default function PaginaInicial() {
                   const valor = event.target.value
                   setProfilePicture(`https://github.com/${valor}.png`)
                   setUsername(valor.toLowerCase())
+                  checkValidUsername()
                 }} 
 
                 fullWidth
@@ -111,19 +126,41 @@ export default function PaginaInicial() {
                   },
                 }}
               />
-              <Button
-                type='submit'
-                label='Entrar'
-                fullWidth
-                buttonColors={{
-                  contrastColor: appConfig.theme.colors.light['primaryOverlay'],
-                  mainColor: appConfig.theme.colors.light['primary'],
-                  mainColorLight: appConfig.theme.colors.light['secondary'],
-                  mainColorStrong: appConfig.theme.colors.light['primary'],
-                }}
-                rounded="full"
-                size="xl"
-              />
+              { isUsernameValid 
+                ? ( 
+                  <Button
+                    type='submit'
+                    label='Entrar'
+                    fullWidth
+                    buttonColors={{
+                      contrastColor: appConfig.theme.colors.light['primaryOverlay'],
+                      mainColor: appConfig.theme.colors.light['primary'],
+                      mainColorLight: appConfig.theme.colors.light['secondary'],
+                      mainColorStrong: appConfig.theme.colors.light['primary'],
+                    }}
+                    rounded="full"
+                    size="xl"
+                  />)
+                  : (
+                    <Button
+                    type='submit'
+                    label='Usuário inválido'
+                    fullWidth
+                    buttonColors={{
+                      contrastColor: appConfig.theme.colors.light['primaryOverlay'],
+                      mainColor: appConfig.theme.colors.light['primary'],
+                      mainColorLight: appConfig.theme.colors.light['secondary'],
+                      mainColorStrong: appConfig.theme.colors.light['primary'],
+                    }}
+                    rounded="full"
+                    size="xl"
+                    disabled='true'
+                    styleSheet={{
+                      filter: 'grayscale(1)'
+                    }}
+                  />
+                  )
+            }
             </Box>
             {/* Formulário */}
           </Box>

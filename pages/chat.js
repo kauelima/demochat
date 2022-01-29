@@ -11,6 +11,8 @@ const supabase_anon_key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const supabase_url = process.env.NEXT_PUBLIC_SUPABASE_URL 
 const supabaseClient = createClient(supabase_url, supabase_anon_key)
 
+
+
 function remoteMessagesListener(remoteMsg) {
     return supabaseClient
         .from('chatMessages')
@@ -36,7 +38,20 @@ export default function ChatPage() {
     const router = useRouter();
     const loggedUsername = router.query.username;
 
+    function kickNoUsername(){
+        {loggedUsername 
+            ? (
+                console.log('UsernameValido')
+            )
+            : (
+                router.push('../')
+            )
+        
+        }
+    }
+
     React.useEffect(() => {
+        kickNoUsername()
         supabaseClient
             .from('chatMessages')
             .select('*')
@@ -209,6 +224,7 @@ export default function ChatPage() {
 }
 
 function Header() {
+
     return (
         <>
             <Box styleSheet={{ width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
@@ -219,8 +235,8 @@ function Header() {
                     variant='tertiary'
                     colorVariant='neutral'
                     label='Logout'
-                    href="/"
                     rounded="full"
+                    href='../'
                     styleSheet={{
                         color: appConfig.theme.colors.light['white'],
                     }}
