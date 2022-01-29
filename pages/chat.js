@@ -119,7 +119,7 @@ export default function ChatPage() {
         <Box
             styleSheet={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: appConfig.theme.colors.light['primaryOverlay']
+                color: appConfig.theme.colors.light['black']
             }}
         >
             <Box
@@ -128,11 +128,11 @@ export default function ChatPage() {
                     flexDirection: 'column',
                     flex: 1,
                     boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-                    backgroundImage: `url(https://kauelima.com/img/stones.jpg)`,
+                    backgroundColor: appConfig.theme.colors.light['gray4'],
                     height: '100%',
                     maxWidth: '100%',
                     maxHeight: '100vh',
-                    padding: '4px',
+                    padding: '0',
                 }}
             >
                 <Header />
@@ -144,7 +144,6 @@ export default function ChatPage() {
                         height: '80%',
                         backgroundColor: appConfig.theme.colors.light['white'],
                         flexDirection: 'column',
-                        borderRadius: '5px',
                         padding: '16px',
                     }}
                 >
@@ -157,15 +156,6 @@ export default function ChatPage() {
                             alignItems: 'flex-start',
                         }}
                     >
-                        <Image
-                                    styleSheet={{
-                                        width: '50px',
-                                        height: '50px',
-                                        borderRadius: '50%',
-                                        marginRight: '8px',
-                                    }}
-                                    src={`https://github.com/${loggedUsername}.png`}
-                        />
                         <TextField
                             value={chatmsg}
                             onChange={(event) => {
@@ -228,22 +218,42 @@ export default function ChatPage() {
 
 function Header() {
 
+    const router = useRouter();
+    const loggedUsername = router.query.username;
+
+
     return (
         <>
-            <Box styleSheet={{ width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
-                <Text variant='heading5'>
-                    Chat
-                </Text>
+            <Box styleSheet={{ 
+                    width: '100%', 
+                    margin: '16px', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'flex-start' }} >
+                
                 <Button
                     variant='tertiary'
                     colorVariant='neutral'
-                    label='Logout'
+                    iconName="FaArrowLeft" 
                     rounded="full"
                     href='../'
                     styleSheet={{
-                        color: appConfig.theme.colors.light['white'],
+                        color: appConfig.theme.colors.light['black'],
+                        marginRight: '8px'
                     }}
                 />
+                <Image
+                                    styleSheet={{
+                                        width: '30px',
+                                        height: '30px',
+                                        borderRadius: '50%',
+                                        marginRight: '8px',
+                                    }}
+                                    src={`https://github.com/${loggedUsername}.png`}
+                        />
+                <Text variant='heading5'>
+                    {loggedUsername}
+                </Text>
             </Box>
         </>
     )
