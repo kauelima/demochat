@@ -12,9 +12,10 @@ function GlobalStyle() {
       }
       /* App fit Height */ 
       html, body, #__next {
-        min-height: 100vh;
+        min-height: 100;
         display: flex;
         flex: 1;
+        margin: 0 ;
       }
       #__next {
         flex: 1;
@@ -23,6 +24,7 @@ function GlobalStyle() {
         flex: 1;
       }
       /* ./App fit Height */ 
+      
     `}</style>
     );
   }

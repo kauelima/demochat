@@ -144,7 +144,7 @@ export default function ChatPage() {
                         height: '80%',
                         backgroundColor: appConfig.theme.colors.light['white'],
                         flexDirection: 'column',
-                        padding: '16px',
+                        paddingHorizontal: '16px',
                     }}
                 >
                     <MessageList mensagens={listaDeMensagens} setListaDeMensagens={setListaDeMensagens} />
@@ -177,7 +177,7 @@ export default function ChatPage() {
                                 resize: 'none',
                                 borderRadius: '50px',
                                 backgroundColor: appConfig.theme.colors.light['gray4'],
-                                marginRight: '12px',
+                                marginRight: '8px',
                                 color: appConfig.theme.colors.light['black'],
                             }}
                         />
@@ -203,7 +203,6 @@ export default function ChatPage() {
                             label="Enviar"
                             styleSheet={{
                                 height: '50px',
-                                margin: '0',
                                 paddingHorizontal: '25px'
                             }}
                         />
@@ -224,7 +223,8 @@ function Header() {
         <>
             <Box styleSheet={{ 
                     width: '100%', 
-                    margin: '16px', 
+                    padding: '8px',
+                    margin: '0', 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'flex-start' }} >
@@ -288,7 +288,7 @@ function MessageList(props) {
                 flexDirection: 'column-reverse',
                 flex: 1,
                 color: appConfig.theme.colors.light['gray1'],
-                marginBottom: '16px',
+                marginBottom: '8px',
             }}
         >
             {props.mensagens.map((chatmsg) => {  
