@@ -118,7 +118,7 @@ export default function ChatPage() {
     return (
         <Box
             styleSheet={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 color: appConfig.theme.colors.light['black']
             }}
         >
