@@ -1,9 +1,11 @@
-import { Box, Text, TextField, Image, Button } from '@skynexui/components';
-import React from 'react';
-import { useRouter } from 'next/router';
-import appConfig from '../config.json';
+import { Box, Text, TextField, Image, Button } from '@skynexui/components'
+import React from 'react'
+import { useRouter } from 'next/router'
+import appConfig from '../config.json'
 import { createClient } from '@supabase/supabase-js'
 import { ButtonSendSticker } from '../src/components/buttonSendSticker'
+import moment from 'moment'
+import Moment from 'react-moment'
 
 
 
@@ -283,6 +285,7 @@ function MessageList(props) {
         >
             {props.mensagens.map((chatmsg) => {  
             const isSameUser = username === chatmsg.usr
+            const momentDateTime = moment()
             
                 return (
                     
@@ -334,7 +337,7 @@ function MessageList(props) {
                                     tag="span"
                                 >
                                    
-                                   {chatmsg.created_at}                            
+                                   <Moment format='DD/MM/YY HH:mm'>{chatmsg.created_at}</Moment>                          
                                 </Text>
                             </Box>
                             {/* Delete Message Button */}
