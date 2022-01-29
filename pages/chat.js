@@ -172,12 +172,10 @@ export default function ChatPage() {
                             type="text"
                             styleSheet={{
                                 width: '100%',
-
                                 height: '50px',
                                 border: '0',
                                 resize: 'none',
                                 borderRadius: '50px',
-                                padding: '6px 8px',
                                 backgroundColor: appConfig.theme.colors.light['gray4'],
                                 marginRight: '12px',
                                 color: appConfig.theme.colors.light['black'],
