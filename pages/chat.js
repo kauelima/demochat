@@ -39,11 +39,12 @@ export default function ChatPage() {
     const loggedUsername = router.query.username;
 
     function kickNoUsername(){
-        {loggedUsername 
+        {loggedUsername
             ? (
-                console.log('UsernameValido')
+                console.log('Valid username', loggedUsername)
             )
             : (
+                console.log('Invalid username', loggedUsername),
                 router.push('../')
             )
         
@@ -51,7 +52,6 @@ export default function ChatPage() {
     }
 
     React.useEffect(() => {
-        kickNoUsername()
         supabaseClient
             .from('chatMessages')
             .select('*')
@@ -95,6 +95,7 @@ export default function ChatPage() {
                     })
                 }
             });
+        kickNoUsername()
     }, []);
 
   

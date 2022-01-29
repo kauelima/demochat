@@ -31,12 +31,10 @@ export default function PaginaInicial() {
     function checkValidUsername() {
         {username.length >= 1
           ? (
-            setIsUsernameValid(true),
-            console.log('username valid: ', username)
+            setIsUsernameValid(true)
           )
           : (
-            setIsUsernameValid(false),
-            console.log('username invalid: ', username)
+            setIsUsernameValid(false)
           )
         }
     }
