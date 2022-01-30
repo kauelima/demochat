@@ -10,7 +10,7 @@ import Moment from 'react-moment'
 
 
 const supabase_anon_key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase_url = process.env.NEXT_PUBLIC_SUPABASE_URL 
+const supabase_url = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseClient = createClient(supabase_url, supabase_anon_key)
 
 
@@ -71,12 +71,8 @@ export default function ChatPage() {
                 else if(eventType==='DELETE'){
                     setListaDeMensagens((currentMsgList)=>{
                         return (
-                            // console.log('Lista antes: ', currentMsgList),
                             currentMsgList.filter((msgAtual)=>{
                                 return msgAtual.id !== remoteMsg.id
-                                // console.log('Atual: ', msgAtual.id),
-                                // console.log('Remote: ', remoteMsg.id),
-                                // console.log('Lista depois: ', currentMsgList)
                             })
                         )
                     })
